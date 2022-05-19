@@ -1,45 +1,41 @@
-/*
-
+/* 
  Бесконечно выводит заранее заданную строку и ожидает сигналов SIGUSR1 и SIGUSR2. 
  При получении каждого из сигналов меняет выводимую строку.
-
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
+#include <string.h>
 
-char* lines[] = {
-	"Base Line",
-	"processed SIGUSR1",
-	"processed SIGUSR2"
-};
+char str[50] = "string1\n";
+char str1[50] = "SIGUSR1\n";
+char str2[50] = "SIGUSR2\n";
 
-int i = 0;
+void handler(int sign);
 
-void handler(int sig)
-{
-        switch (sig)
-        {
-                case SIGUSR1:i = 1; break;
-		case SIGUSR2: i = 2; break;
-                default: i = 0;
-        }
-}
 
-int main(void)
-{
-	printf("PID = %d\n", getpid());
+int main() {
 
 	signal(SIGUSR1, handler);
-
 	signal(SIGUSR2, handler);
 
-	while (1){
-		char* line = lines[i];
-		printf("%s\n", line);
-		sleep(4);
-	}
+	printf("PID: %d\n", getpid());
 
-	return 0;
+	for (int i = 1;; i++) { 
+		printf("%s", str);
+		sleep(2);
+	}
+}
+
+void handler(int sign) {
+	switch (sign) {
+	case SIGUSR1:
+		strcpy(str, str1);
+		break;
+	case SIGUSR2:
+		strcpy(str, str2);
+		break;
+	}
 }
