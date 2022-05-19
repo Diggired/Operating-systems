@@ -1,19 +1,24 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
+/*
+
+ Отправляет процессу сигнал SIGUSR1 или SIGUSR2
+
+*/
+
 #include <stdlib.h>
+#include <stdio.h>
+#include <signal.h>
 #include <string.h>
 
-int main(int argc, char* argv[])
-{
-	pid_t pid = atoi(argv[1]);
+int main(int argc, char *argv[]) {
+	int pid = atoi(argv[1]);
 
-	if (strcmp(argv[2] ,"SIGUSR1") == 0){
+	if ((strcmp(argv[2], "SIGUSR1") == 0)) {
+
 		kill(pid, SIGUSR1);
-	} else if (strcmp(argv[2], "SIGUSR2") == 0) {
+
+	} else {
+
 		kill(pid, SIGUSR2);
 	}
-	printf("%d\n",argc);
-	return 0;
+
 }
